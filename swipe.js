@@ -3,7 +3,7 @@
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
- *
+ * 
 */
 
 function Swipe(container, options) {
@@ -507,22 +507,27 @@ function Swipe(container, options) {
       // return total number of slides
       return length;
     },
-    kill: function() {
+    kill: function(removeStyles) {
+
+      removeStyles = removeStyles || true;
 
       // cancel slideshow
       stop();
 
       // reset element
-      element.style.width = 'auto';
-      element.style.left = 0;
+      if (removeStyles) {
+        element.removeAttribute('style');
+      }
 
       // reset slides
       var pos = slides.length;
       while(pos--) {
 
         var slide = slides[pos];
-        slide.style.width = '100%';
-        slide.style.left = 0;
+
+        if (removeStyles) {
+          slide.removeAttribute('style');
+        }
 
         if (browser.transitions) translate(pos, 0, 0);
 
