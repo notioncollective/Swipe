@@ -1,3 +1,8 @@
+## Notion Collective Modifications
+Swipe is a great little tool.  We forked in order to add features/fix bugs as needed.  So far:
+
+* better handling of resetting styles when Swipe.kill() is called
+
 ## Usage
 Swipe only needs to follow a simple pattern. Here is an example:
 
