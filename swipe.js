@@ -520,7 +520,7 @@ function Swipe(container, options) {
 
       // reset element
       if (resetStyles) {
-        element.style = cachedStyles;
+        element.style = cachedContainerStyles;
       }
 
       // reset slides
