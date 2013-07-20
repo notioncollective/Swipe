@@ -13,6 +13,8 @@ function Swipe(container, options) {
   // utilities
   var noop = function() {}; // simple no operation function
   var offloadFn = function(fn) { setTimeout(fn || noop, 0) }; // offload a functions execution
+  var cachedContainerStyles = container.style;
+  var cachedSlideStyles = [];
   
   // check browser capabilities
   var browser = {
@@ -61,8 +63,9 @@ function Swipe(container, options) {
     // stack elements
     var pos = slides.length;
     while(pos--) {
-
       var slide = slides[pos];
+      // add predefined styles to cache
+      cachedSlideStyles[pos] = slide.style;
 
       slide.style.width = width + 'px';
       slide.setAttribute('data-index', pos);
@@ -507,16 +510,17 @@ function Swipe(container, options) {
       // return total number of slides
       return length;
     },
-    kill: function(removeStyles) {
+    kill: function(resetStyles) {
 
-      removeStyles = removeStyles || true;
+      // default to true
+      resetStyles = resetStyles || true;
 
       // cancel slideshow
       stop();
 
       // reset element
-      if (removeStyles) {
-        element.removeAttribute('style');
+      if (resetStyles) {
+        element.style = cachedStyles;
       }
 
       // reset slides
@@ -525,8 +529,9 @@ function Swipe(container, options) {
 
         var slide = slides[pos];
 
-        if (removeStyles) {
-          slide.removeAttribute('style');
+        if (resetStyles) {
+          slide.style = cachedSlideStyles[pos];
+          // slide.removeAttribute('style');
         }
 
         if (browser.transitions) translate(pos, 0, 0);
