@@ -6,6 +6,8 @@
  * 
 */
 
+// TODO - see if cssText works properly in IE
+
 function Swipe(container, options) {
 
   "use strict";
@@ -13,7 +15,8 @@ function Swipe(container, options) {
   // utilities
   var noop = function() {}; // simple no operation function
   var offloadFn = function(fn) { setTimeout(fn || noop, 0) }; // offload a functions execution
-  var cachedContainerStyles = container.style;
+  var cachedContainerStyles = container.style.cssText;
+  console.log("STYLE: ", cachedContainerStyles );
   var cachedSlideStyles = [];
   
   // check browser capabilities
@@ -64,9 +67,11 @@ function Swipe(container, options) {
     var pos = slides.length;
     while(pos--) {
       var slide = slides[pos];
-      // add predefined styles to cache
-      cachedSlideStyles[pos] = slide.style;
-
+      // add predefined styles to cache, the first time setup is called ONLY
+      if (!cachedSlideStyles[pos]) {
+        cachedSlideStyles[pos] = slide.style.cssText;
+      }
+      console.log("STYLE: ", cachedSlideStyles[pos]);
       slide.style.width = width + 'px';
       slide.setAttribute('data-index', pos);
 
@@ -511,7 +516,7 @@ function Swipe(container, options) {
       return length;
     },
     kill: function(resetStyles) {
-
+      console.log('killing it');
       // default to true
       resetStyles = resetStyles || true;
 
@@ -520,7 +525,8 @@ function Swipe(container, options) {
 
       // reset element
       if (resetStyles) {
-        element.style = cachedContainerStyles;
+        console.log(cachedContainerStyles);
+        element.style.cssText = cachedContainerStyles;
       }
 
       // reset slides
@@ -530,7 +536,8 @@ function Swipe(container, options) {
         var slide = slides[pos];
 
         if (resetStyles) {
-          slide.style = cachedSlideStyles[pos];
+          console.log(cachedSlideStyles[pos]);
+          slide.style.cssText = cachedSlideStyles[pos];
           // slide.removeAttribute('style');
         }
 
